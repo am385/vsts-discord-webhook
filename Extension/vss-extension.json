@@ -1,0 +1,95 @@
+{
+    "manifestVersion": 1,
+    "id": "discord-service-hooks-consumer",
+    "version": "0.1.3.20180424",
+    "name": "Discord Integration",
+    "description": "An extension that provides a new Service Hook consumer for Discord Web Hooks.",
+    "publisher": "AndrewMessick",
+    "public": false,
+    "icons": {
+        "default": "images/discord-logo-color.png"
+    },
+    "content": {
+        "details": {
+            "path": "readme.md"
+        }
+    },
+    "categories": [
+        "Developer samples"
+    ],
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],
+    "contributions": [
+        {
+            "id": "consumer",
+            "type": "ms.vss-servicehooks.consumer",
+            "targets": [
+                "ms.vss-servicehooks.consumers"
+            ],
+            "properties": {
+                "id": "consumer",
+                "name": "Discord",
+                "description": "Invoke a Discord Webhook",
+                "informationUrl": "https://github.com/am385/vsts-discord-webhook",
+                "inputDescriptors": [
+                    {
+                        "id": "webhookId",
+                        "isRequired": true,
+                        "name": "Discord Webhook ID",
+                        "description": "This is the ID of your Discord Webhook. It can be found in the Discord Webhook URL. '/webhooks/{webhook.id}/{webhook.token}'",
+                        "inputMode": "textbox"
+                    },                    
+                    {
+                        "id": "webhookToken",
+                        "isRequired": true,
+                        "name": "Discord Webhook Token",
+                        "description": "This is the Token of your Discord Webhook. It can be found in the Discord Webhook URL. '/webhooks/{webhook.id}/{webhook.token}'",
+                        "inputMode": "textbox"
+                    },
+                    {
+                        "id": "webhookUsername",
+                        "isRequired": false,
+                        "name": "Discord Webhook Username",
+                        "description": "This is an optional override for your Discord Webhook Username. By default it will be 'VSTS'",
+                        "inputMode": "textbox"
+                    }
+                ],
+                "actions": [
+                    {
+                        "id": "performAction",
+                        "name": "Perform action",
+                        "description": "Posts a standard event payload",
+                        "supportedEventTypes": [
+                            "build.complete",
+                            "git.push",
+                            "git.pullrequest.created",
+                            "git.pullrequest.updated",
+                            "git.pullrequest.merged",
+                            "tfvc.checkin",
+                            "workitem.created",
+                            "workitem.commented",
+                            "workitem.updated",
+                            "workitem.deleted",
+                            "workitem.restored",
+                            "ms.vss-release.release-created-event",
+                            "ms.vss-release.release-abandoned-event",
+                            "ms.vss-release.deployment-approval-completed-event",
+                            "ms.vss-release.deployment-approval-pending-event",
+                            "ms.vss-release.deployment-completed-event",
+                            "ms.vss-release.deployment-started-event"
+                        ],
+                        "publishEvent": {
+                            "url": "https://vsts-discord-webhook.azurewebsites.net/api/VstsWebhookInterceptor?code=KRUH6WR83ZYX3N4y/cgA4bi7y54bJYV4DuiawysQgMnaUQeCmx4haA==&id={{{webhookId}}}&token={{{webhookToken}}}&username={{{webhookUsername}}}",
+                            "resourceDetailsToSend": "all",
+                            "messagesToSend": "all",
+                            "detailedMessagesToSend": "all"
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}
